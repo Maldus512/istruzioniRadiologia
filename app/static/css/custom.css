@@ -1,0 +1,85 @@
+body {
+    background-color: cornflowerblue;
+}
+
+.homepagelink {
+    font-size: 32px;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 80px;
+    height: 80px;
+    padding-top: 0;
+}
+
+.content {
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-top: 5px;
+    margin-bottom: 5%;
+    font-size: 20px;
+}
+
+.submit {
+    display: inline;
+}
+
+.my-bg-primary {
+    background-color: rgba(0, 0, 255, 0.3);
+}
+
+.my-bg-secondary {
+    border-width: 2px;
+    background: linear-gradient(rgb(0, 143, 168), rgb(0, 168, 140));
+}
+
+.exam_stepbox {
+    border-style: solid;
+    border-color: blue;
+    border-radius: 32px;
+    padding: 20px;
+    margin: 16px 10% 10px 10%;
+    text-align: left;
+}
+
+.stepbox {
+    border-style: solid;
+    border-color: blue;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 32px;
+    box-shadow: -10px 10px 5px #888888;
+    text-align: center;
+}
+
+.selectpicker {
+    width: 180px;
+}
+
+.navbar {
+    border-radius: 0px !important;
+}
+
+@media only screen and (max-width: 500px) {
+    .selectpicker {
+        max-width: 180px;
+    }
+
+    .exam_stepbox {
+        margin-left: 5px;
+        margin-right: 5px;
+        padding : 16px;
+    }
+
+    .content {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .submit {
+        display: inline-block;
+        width: 180px  !important;
+        font-size: 20px;
+    }
+}

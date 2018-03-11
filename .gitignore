@@ -1,0 +1,7 @@
+app.db
+__pycache__
+.env
+db_repository
+*.log
+.vscode
+*.pyc

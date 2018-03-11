@@ -1,0 +1,17 @@
+{
+    "name" : "Rx Torace",
+    "steps" : [
+        {
+            "language": "it",
+            "description" : "L'esame Rx del torace è un esame di breve durata, non invasivo e sicuro, la cui unica controindicazione è lo stato di gravidanza: se si è certi di esserlo o se ne si sospetta la presenza non è possibile procedere con l'esame perchè sarebbe rischioso per il bambino.\n\n All'interno della sala diagnostica il tecnico verificherà, come prima cosa, la sua identità, chiedendole nome, cognome e data di nascita. \n le verrà poi indicato uno spogliatoio in cui dovrà togliere la maglia ed eventuali oggetti metallici, come reggiseno, catenine o piercing, che creerebbero interferenza.\n Se si dovesse sentire in imbarazzo, non si preoccupi: le verrà consegnato un camice di stoffa. \n\nL'indagine verrà fatta in piedi. Il tecnico le chiederà di fare dei respiri profondi, trattenendo l'aria per qualche secondo. Nel caso non riesca a stare in piedi, si proseguirà con la procedura sdraiato su un lettino.\n Verranno prese due immagini: una in cui lei sarà appoggiato col petto alla cassetta radiologica e una in cui sarà appoggiato sul fianco sinistro, tenendo le braccia alzate; dopodichè l'esame sarà concluso e potrà rivestirsi.\n La struttura le augura una buona giornata."
+        },
+        {
+            "language": "en",
+            "description" : "Descrizione step 0, ma in inglese\n\n Descrizione step 1, ma in inglese \n\nDescrizione step 2, ma in inglese"
+        },
+        {
+            "language": "es",
+            "description" : "Descrizione step 0, ma in spagnolo\n\n Descrizione step 1, ma in spagnolo \n\n Descrizione step 2, ma in spagnolo"
+        }
+    ]
+}

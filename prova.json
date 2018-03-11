@@ -1,0 +1,52 @@
+{
+    "name" : "Rx Torace",
+    "steps" : [
+        {
+            "language": "it",
+            "num" : 0,
+            "description" : "L'esame Rx del torace è un esame di breve durata, non invasivo e sicuro, la cui unica controindicazione è lo stato di gravidanza: se si è certi di esserlo o se ne si sospetta la presenza non è possibile procedere con l'esame perchè sarebbe rischioso per il bambino."
+        },
+        {
+            "language": "it",
+            "num" : 1,
+            "description" : "All'interno della sala diagnostica il tecnico verificherà, come prima cosa, la sua identità, chiedendole nome, cognome e data di nascita. \n le verrà poi indicato uno spogliatoio in cui dovrà togliere la maglia ed eventuali oggetti metallici, come reggiseno, catenine o piercing, che creerebbero interferenza.\n Se si dovesse sentire in imbarazzo, non si preoccupi: le verrà consegnato un camice di stoffa."
+        },
+        {
+            "language": "it",
+            "num" : 2,
+            "description" : "L'indagine verrà fatta in piedi. Il tecnico le chiederà di fare dei respiri profondi, trattenendo l'aria per qualche secondo. Nel caso non riesca a stare in piedi, si proseguirà con la procedura sdraiato su un lettino.\n Verranno prese due immagini: una in cui lei sarà appoggiato col petto alla cassetta radiologica e una in cui sarà appoggiato sul fianco sinistro, tenendo le braccia alzate; dopodichè l'esame sarà concluso e potrà rivestirsi.\n La struttura le augura una buona giornata."
+        },
+        {
+            "language": "en",
+            "num" : 0,
+            "description" : "Descrizione step 0, ma in inglese"
+        },
+        {
+            "language": "en",
+            "num" : 1,
+            "description" : "Descrizione step 1, ma in inglese"
+        },
+        {
+            "language": "en",
+            "num" : 2,
+            "description" : "Descrizione step 2, ma in inglese"
+        },
+        {
+            "language": "es",
+            "num" : 0,
+            "description" : "Descrizione step 0, ma in spagnolo"
+        },
+        {
+            "language": "es",
+            "num" : 1,
+            "description" : "Descrizione step 1, ma in spagnolo"
+        },
+        {
+            "language": "es",
+            "num" : 2,
+            "description" : "Descrizione step 2, ma in spagnolo"
+        }
+
+
+    ]
+}

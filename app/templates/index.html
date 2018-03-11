@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<div class="my-bg-primary stepbox">
+    <p>{{ _('Please, select your preferred language') }}</p>
+    <form method="POST" action="index">
+        <div>
+        <select class="selectpicker" id="languagepicker" data-width="fit" name="lang">
+            {% for lang in languages %}
+                {% if lang.locale == locale %}
+                    <option value='{{ lang.locale }}' selected="selected"> {{lang.name}} </option>
+                {% else %}
+                    <option value='{{ lang.locale }}'> {{lang.name}} </option>
+                {% endif %}
+            {% endfor %}
+              <!--<option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>-->
+        </select>
+        <input type="submit" class="submit" value="{{ _('send') }}"/>
+        </div>
+    </form>
+</div>
+{% if exams is defined %}
+<div class="my-bg-primary stepbox">
+    <p>{{ _('Now select the exam that was prescribed to you') }}</p>
+    <form method="POST" action="index">
+        <select class="selectpicker" id="exampicker" data-width="fit" name="exam">
+            {% for e in exams %}
+                {% if exam is defined and e.id == exam.id %}
+                    <option value='{{ e.id }}' selected="selected"> {{e.name}} </option>
+                {% else %}
+                    <option value='{{ e.id }}'> {{e.name}} </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <input type="submit" class="submit" value="{{ _('send') }}"/>
+    </form>
+</div>
+{% endif %}
+{% if steps is defined %}
+<div class="my-bg-primary stepbox" id="instructions">
+        {% for description in steps %}
+            <div class="my-bg-secondary exam_stepbox">
+                {% for line in description %}
+                <p>{{ line }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
