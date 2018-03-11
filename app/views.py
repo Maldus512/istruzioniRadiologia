@@ -5,6 +5,8 @@ from app.config import BaseConfig
 from flask import jsonify
 from flask import session
 from app import db, models
+import json
+import datetime
 
 @babel.localeselector
 def get_locale():
@@ -65,6 +67,27 @@ def change_language():
     if request.form and 'lang' in request.form:
         session['lang'] = request.form['lang']
         session['step'] = 2
+        return jsonify({'result':'success'})
+    else:
+        return jsonify({'result':'failure'})
+
+
+@app.route('/update_exams', methods=['POST'])
+def update_database():
+    data = request.get_json()
+    if data:
+        models.clear_data(db.session)
+        for exam in data:
+            e = models.Exam(name=exam['name'])
+            db.session.add(e)
+            for desc in exam["steps"]:
+                d = models.Description(language=desc['language'], description=desc['description'], exam=e)
+                db.session.add(d)
+
+        db.session.commit()
+        with open("{}.json".format(datetime.datetime.now(), "w")) as f:
+            json.dump(data, f, indent=4)
+
         return jsonify({'result':'success'})
     else:
         return jsonify({'result':'failure'})
