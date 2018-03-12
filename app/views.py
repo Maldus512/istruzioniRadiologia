@@ -42,12 +42,13 @@ def index():
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, locale=session['lang'])
     elif session['step'] == 3:
         exams = models.Exam.query.all()
-        exam = models.Exam.query.filter_by(id=session['exam']).first()
-        steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
         translations = []
-        for s in steps:
-            content = s.split('\n')
-            translations.append(content)
+        if len(exams) > 0:
+            exam = models.Exam.query.filter_by(id=session['exam']).first()
+            steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
+            for s in steps:
+                content = s.split('\n')
+                translations.append(content)
 
         return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam,
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, steps=translations, locale=session['lang'])
