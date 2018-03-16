@@ -7,6 +7,7 @@ from flask import session
 from app import db, models
 import json
 import datetime
+import os
 
 @babel.localeselector
 def get_locale():
@@ -86,8 +87,8 @@ def update_database():
                 db.session.add(d)
 
         db.session.commit()
-        with open("{}.json".format(datetime.datetime.now(), "w")) as f:
-            json.dump(data, f, indent=4)
+        #with open("/tmp/{}.json".format(datetime.datetime.now(), "w")) as f:
+            #json.dump(data, f, indent=4)
 
         return jsonify({'result':'success'})
     else:

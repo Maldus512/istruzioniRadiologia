@@ -1,6 +1,7 @@
 app.db
 __pycache__
 .env
+venv
 db_repository
 *.log
 .vscode
