@@ -1,7 +1,7 @@
 import imp
 from migrate.versioning import api
-from app import db
-from app.config import BaseConfig as c 
+from radiologia import db
+from radiologia.config import BaseConfig as c 
 v = api.db_version(c.SQLALCHEMY_DATABASE_URI, c.SQLALCHEMY_MIGRATE_REPO)
 migration = c.SQLALCHEMY_MIGRATE_REPO + ('/versions/%03d_migration.py' % (v+1))
 tmp_module = imp.new_module('old_model')

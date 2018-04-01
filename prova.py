@@ -1,6 +1,6 @@
 import json
 import sys
-from app import models, db
+from radiologia import models, db
 
 def clear_data(session):
     meta = db.metadata

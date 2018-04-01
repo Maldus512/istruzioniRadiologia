@@ -1,4 +1,4 @@
-from app import db
+from radiologia import db
 
 def clear_data(session):
     meta = db.metadata

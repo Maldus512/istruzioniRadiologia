@@ -1,13 +1,14 @@
-from app import app
+from radiologia import app
 from flask import render_template, request
-from app import babel, db
-from app.config import BaseConfig
+from radiologia import babel, db
+from radiologia.config import BaseConfig
 from flask import jsonify
 from flask import session
-from app import db, models
+from radiologia import db, models
 import json
 import datetime
 import os
+from radiologia.utils import filemd5
 
 @babel.localeselector
 def get_locale():
@@ -51,7 +52,9 @@ def index():
                 content = s.split('\n')
                 translations.append(content)
 
-        return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam,
+        audio = "static/audio/promises.mp3"
+
+        return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, steps=translations, locale=session['lang'])
 
 @app.errorhandler(404)
@@ -91,5 +94,26 @@ def update_database():
             #json.dump(data, f, indent=4)
 
         return jsonify({'result':'success'})
+    else:
+        return jsonify({'result':'failure', 'data':data})
+
+@app.route('/audio_md5', methods=['GET'])
+def get_audio_md5():
+    data = request.get_json()
+    response = []
+    if data:
+        for el in data:
+            filename = os.path.join(app.config["AUDIODIR"], el["name"])
+            if os.path.isfile(filename):
+                local = filemd5(filename)
+                remote = el["md5"]
+
+                if local != remote:
+                    el["servermd5"] = local
+                    response.append(el)
+            else:
+                response.append(el)
+
+        return jsonify({'result':'success', 'data':response})
     else:
         return jsonify({'result':'failure'})

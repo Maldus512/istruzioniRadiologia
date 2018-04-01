@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel
-from app.config import BaseConfig, ReleaseConfig
+from radiologia.config import BaseConfig, ReleaseConfig
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
@@ -18,4 +18,4 @@ if not app.debug:
     app.logger.addHandler(file_handler)
     app.logger.info('patti startup')
 
-from app import views, models
+from radiologia import views, models

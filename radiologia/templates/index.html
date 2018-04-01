@@ -36,6 +36,12 @@
 {% endif %}
 {% if steps is defined %}
 <div class="my-bg-primary stepbox" id="instructions">
+        {% if audio is defined %}
+        <audio controls>
+            <source src="{{ audio }}" type="audio/mpeg">
+            {{ _('Audio error') }}
+        </audio> 
+        {% endif %}
         {% for description in steps %}
             <div class="my-bg-secondary exam_stepbox">
                 {% for line in description %}

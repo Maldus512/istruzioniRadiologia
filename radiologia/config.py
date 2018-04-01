@@ -4,6 +4,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class BaseConfig:
+    BASEDIR = os.path.abspath(os.path.dirname(__file__))
+    AUDIODIR = os.path.join(BASEDIR, "static/audio")
+    ALLOWED_EXTENSIONS = set(['mp3'])
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -35,6 +38,12 @@ class BaseConfig:
     ]
 
 
+class TestingConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test_db.db')
+    SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'test_db_repository')
+    DEBUG = False
+    TESTING = True
+    WTF_CSRF_ENABLED = False
 
 
 class ReleaseConfig(BaseConfig):
