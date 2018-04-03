@@ -3,8 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel
 from radiologia.config import BaseConfig, ReleaseConfig
 from flask_migrate import Migrate
+import os
 
-app = Flask(__name__)
+tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+app = Flask(__name__, template_folder=tmpl_dir, static_folder=static_dir)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 babel = Babel(app)
