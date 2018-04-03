@@ -60,11 +60,14 @@ class TestGetMethods(unittest.TestCase):
         ]
         res = self.app.get("/audio_md5", data=json.dumps(data), content_type='application/json')
         self.assertEqual(res.status_code, 200)
-        print(res.data)
 
     def test_database(self):
         exams = models.Exam.query.all()
         self.assertEqual(len(exams), 0)
+        res = self.app.post("/update_exams", data=json.dumps([{'name':'esame1test', 'steps':[{'language':"it",'description':"descrizione"}]}]), content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        exams = models.Exam.query.all()
+        self.assertEqual(len(exams), 1)
         res = self.app.post("/update_exams", data=json.dumps([{'name':'esame1test', 'steps':[{'language':"it",'description':"descrizione"}]}]), content_type='application/json')
         self.assertEqual(res.status_code, 200)
         exams = models.Exam.query.all()
@@ -75,7 +78,8 @@ class TestGetMethods(unittest.TestCase):
         with open(testfile, 'rb') as f:
             response = self.app.post('upload_audio', buffered=True,
                             content_type='multipart/form-data',
-                            data={ 'file_field' : (io.BytesIO(f.read()), testfile)})
+                            data={ 'file' : (io.BytesIO(f.read()), testfile)})
+            print(response.data)
         
 
 

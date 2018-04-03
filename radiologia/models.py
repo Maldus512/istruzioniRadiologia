@@ -33,6 +33,7 @@ class Description(db.Model):
     exam_id = db.Column(db.Integer, db.ForeignKey('exam.id'))
     language = db.Column(db.String(8), index=True, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    audio = db.Column(db.String(80), nullable=True)
 
     def __repr__(self):
         return '<Description in %r of %r>' % (self.language, self.exam)

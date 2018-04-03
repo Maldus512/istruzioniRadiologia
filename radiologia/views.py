@@ -8,7 +8,8 @@ from radiologia import db, models
 import json
 import datetime
 import os
-from radiologia.utils import filemd5
+from radiologia.utils import *
+from werkzeug.utils import secure_filename
 
 @babel.localeselector
 def get_locale():
@@ -48,11 +49,11 @@ def index():
         if len(exams) > 0:
             exam = models.Exam.query.filter_by(id=session['exam']).first()
             steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
+            audio = exam.steps.filter_by(language=session['lang']).first().audio#"static/audio/promises.mp3"
             for s in steps:
                 content = s.split('\n')
                 translations.append(content)
 
-        audio = "static/audio/promises.mp3"
 
         return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, steps=translations, locale=session['lang'])
@@ -81,8 +82,9 @@ def change_language():
 def update_database():
     data = request.get_json()
     if data:
-        models.clear_data(db.session)
+        #models.clear_data(db.session)
         for exam in data:
+            e = models.Exam.query.filter_by(name=exam['name']).delete()
             e = models.Exam(name=exam['name'])
             db.session.add(e)
             for desc in exam["steps"]:
@@ -117,3 +119,19 @@ def get_audio_md5():
         return jsonify({'result':'success', 'data':response})
     else:
         return jsonify({'result':'failure'})
+
+
+@app.route('/upload_audio', methods=['POST'])
+def post_upload_audio():
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        return jsonify({'result':'failure', 'error':'no file'})
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        return jsonify({'result':'failure', 'error':'no filename'})
+    if file and allowed_file(file.filename, app.config['ALLOWED_EXTENSIONS']):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['AUDIODIR'], filename))
+        return jsonify({'result':'success'})

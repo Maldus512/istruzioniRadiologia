@@ -10,3 +10,8 @@ def filemd5(filename, block_size=2**20):
         md5.update(data)
     f.close()
     return md5.hexdigest()
+
+
+def allowed_file(filename, allowed):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in allowed

@@ -7,3 +7,4 @@ db_repository
 .vscode
 *.pyc
 *.mp3
+*.db

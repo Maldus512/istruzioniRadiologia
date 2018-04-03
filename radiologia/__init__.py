@@ -2,11 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel
 from radiologia.config import BaseConfig, ReleaseConfig
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 babel = Babel(app)
+migrate = Migrate(app, db)
 
 if not app.debug:
     import logging
