@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Exam0",
+        "steps": [
+            {
+                "language": "fr",
+                "description": ""
+            },
+            {
+                "language": "en",
+                "description": ""
+            },
+            {
+                "language": "de",
+                "description": ""
+            },
+            {
+                "language": "it",
+                "description": "Prova in itialiano"
+            }
+        ]
+    }
+]

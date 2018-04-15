@@ -58,6 +58,14 @@ def index():
         return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, steps=translations, locale=session['lang'])
 
+@app.route('/contacts')
+def contacts():
+    return render_template("contacts.html")
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
@@ -82,7 +90,7 @@ def change_language():
 def update_database():
     data = request.get_json()
     if data:
-        #models.clear_data(db.session)
+        models.clear_data(db.session)
         for exam in data:
             e = models.Exam.query.filter_by(name=exam['name']).delete()
             e = models.Exam(name=exam['name'])

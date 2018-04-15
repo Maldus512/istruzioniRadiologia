@@ -7,47 +7,62 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-11-29 21:29+0100\n"
-"PO-Revision-Date: 2017-11-23 20:08+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2018-04-10 22:14+0200\n"
+"PO-Revision-Date: 2018-04-10 22:15+0200\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: app/templates/404.html:5
+#: radiologia/templates/404.html:5
 msgid "File not found"
 msgstr ""
 
-#: app/templates/404.html:6 app/templates/500.html:7
+#: radiologia/templates/404.html:6 radiologia/templates/500.html:7
 msgid "Back"
 msgstr ""
 
-#: app/templates/500.html:5
+#: radiologia/templates/500.html:5
 msgid "An unexpected error has occurred"
 msgstr ""
 
-#: app/templates/500.html:6
+#: radiologia/templates/500.html:6
 msgid "The administrator has been notified. Sorry for the inconvenience!"
 msgstr ""
 
-#: app/templates/index.html:2
-#, python-format
-msgid "Hello, %(name)s"
+#: radiologia/templates/base.html:35
+msgid "Radiologia"
 msgstr ""
 
-#: app/templates/index.html:4
+#: radiologia/templates/base.html:44
+msgid "Contatti"
+msgstr ""
+
+#: radiologia/templates/base.html:45
+msgid "About"
+msgstr ""
+
+#: radiologia/templates/contacts.html:3
+msgid "Developer"
+msgstr "Contact the developer"
+
+#: radiologia/templates/index.html:3
 msgid "Please, select your preferred language"
 msgstr ""
 
-#: app/templates/index.html:13 app/templates/index.html:26
+#: radiologia/templates/index.html:16 radiologia/templates/index.html:33
 msgid "send"
 msgstr ""
 
-#: app/templates/index.html:19
+#: radiologia/templates/index.html:22
 msgid "Now select the exam that was prescribed to you"
 msgstr ""
 
+#: radiologia/templates/index.html:42
+msgid "Audio error"
+msgstr ""

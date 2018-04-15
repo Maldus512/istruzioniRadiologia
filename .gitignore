@@ -1,6 +1,7 @@
 app.db
 __pycache__
 .env
+.env2
 venv
 db_repository
 *.log
