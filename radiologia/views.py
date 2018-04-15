@@ -53,6 +53,10 @@ def index():
             for s in steps:
                 content = s.split('\n')
                 translations.append(content)
+        else:
+            exam = None
+            steps = None
+            audio = None
 
 
         return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
@@ -92,7 +96,7 @@ def update_database():
     if data:
         models.clear_data(db.session)
         for exam in data:
-            e = models.Exam.query.filter_by(name=exam['name']).delete()
+#e = models.Exam.query.filter_by(name=exam['name']).delete()
             e = models.Exam(name=exam['name'])
             db.session.add(e)
             for desc in exam["steps"]:
@@ -100,8 +104,8 @@ def update_database():
                 db.session.add(d)
 
         db.session.commit()
-        #with open("/tmp/{}.json".format(datetime.datetime.now(), "w")) as f:
-            #json.dump(data, f, indent=4)
+#with open("/tmp/{}.json".format(datetime.datetime.now(), "w")) as f:
+#json.dump(data, f, indent=4)
 
         return jsonify({'result':'success'})
     else:
