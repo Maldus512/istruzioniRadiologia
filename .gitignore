@@ -9,3 +9,5 @@ db_repository
 *.pyc
 *.mp3
 *.db
+client/data.json
+client/audio/
