@@ -49,7 +49,7 @@ def index():
         if len(exams) > 0:
             exam = models.Exam.query.filter_by(id=session['exam']).first()
             steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
-            audio = exam.steps.filter_by(language=session['lang']).first().audio#"static/audio/promises.mp3"
+            audio = os.path.join(BaseConfig.AUDIODIR, exam.steps.filter_by(language=session['lang']).first().audio)
             for s in steps:
                 content = s.split('\n')
                 translations.append(content)
@@ -96,7 +96,7 @@ def update_database():
             e = models.Exam(name=exam['name'])
             db.session.add(e)
             for desc in exam["steps"]:
-                d = models.Description(language=desc['language'], description=desc['description'], exam=e)
+                d = models.Description(language=desc['language'], description=desc['description'], exam=e, audio=desc['audio'])
                 db.session.add(d)
 
         db.session.commit()
@@ -107,7 +107,7 @@ def update_database():
     else:
         return jsonify({'result':'failure', 'data':data})
 
-@app.route('/audio_md5', methods=['GET'])
+@app.route('/audio_md5', methods=['GET', 'POST'])
 def get_audio_md5():
     data = request.get_json()
     response = []

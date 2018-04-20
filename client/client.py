@@ -8,10 +8,27 @@ import urllib2
 #import requests
 import threading
 import shutil
+import hashlib
+import requests
 
 DEFAULT_LANGUAGES = ["it", "en", "fr", "de"]
 DATAFILE = "data.json"
 UPDATE_URL = 'http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com/update_exams'
+UPDATE_AUDIO = 'http://localhost:5000/audio_md5'
+SEND_AUDIO = 'http://localhost:5000/upload_audio'
+
+
+def filemd5(filename, block_size=2**20):
+    f = open(filename, 'rb')
+    md5 = hashlib.md5()
+    while True:
+        data = f.read(block_size)
+        if not data:
+            break
+        md5.update(data)
+    f.close()
+    return md5.hexdigest()
+
 
 
 def getAudioToUpload(url, audio):
@@ -23,7 +40,7 @@ def getAudioToUpload(url, audio):
     response = urllib2.urlopen(req, data=json.dumps(audio).encode())
     data = json.load(response)
 
-    return data
+    return data['data']
 
 
     
@@ -35,16 +52,23 @@ def upload(url, formatted_data, status):
 
     counter = 0
 
-    """audio = []
+    audio = []
     for el in formatted_data:
-        if el["steps"]["audio"]:
-            audio.append({"file":el["steps"]["audio"], "md5":""})"""
+        for step in el['steps']:
+            if step["audio"]:
+                md5 = filemd5(os.path.join("audio", step["audio"]))
+                audio.append({"name":step["audio"], "md5":md5})
 
     while counter <= 5:
         try:
             status.SetStatusText("Connecting...")
             
             response = urllib2.urlopen(req, data=json.dumps(formatted_data).encode())
+            audio = getAudioToUpload(UPDATE_AUDIO, audio)
+            for el in audio:
+                with open(os.path.join('audio', el['name'])) as f:
+                    files = {'file': f}
+                    response = requests.post(SEND_AUDIO, files=files)
             status.SetStatusText("Data uploaded.")
             break
         except urllib2.HTTPError as e:
@@ -176,10 +200,10 @@ class MainWindow(wx.Frame):
         self.languages.Disable()
         hbox.Add(self.languages, 0, wx.LEFT|wx.ALIGN_RIGHT, 10)
 
-        #self.audioButton = wx.Button(self.panel, label="audio")
-        #self.audioButton.Bind(wx.EVT_BUTTON, self.onClicked)
-        #self.audioButton.Disable()
-        #hbox.Add(self.audioButton, 0, wx.LEFT|wx.ALIGN_LEFT, 40)
+        self.audioButton = wx.Button(self.panel, label="audio")
+        self.audioButton.Bind(wx.EVT_BUTTON, self.onClicked)
+        self.audioButton.Disable()
+        hbox.Add(self.audioButton, 0, wx.LEFT|wx.ALIGN_LEFT, 40)
 
         self.audioLabel = wx.StaticText(self.panel, label="", size=(300,-1))
         hbox.Add(self.audioLabel, 0, wx.RIGHT|wx.LEFT|wx.ALIGN_CENTER_VERTICAL, 10)
@@ -214,7 +238,7 @@ class MainWindow(wx.Frame):
             self.languages.SetSelection(wx.NOT_FOUND)
             self.languages.Disable()
             self.text.Disable()
-            #self.audioButton.Disable()
+            self.audioButton.Disable()
             self.audioLabel.SetLabel("")
             self.status.SetStatusText("")
         self.text.SetFocus()
@@ -356,7 +380,7 @@ class MainWindow(wx.Frame):
             self.data[exam][language] = ""
             self.text.SetValue("")
             self.audioLabel.SetLabel("")
-            #self.audioButton.Disable()
+            self.audioButton.Disable()
         self.text.SetFocus()
 
 
@@ -369,7 +393,7 @@ class MainWindow(wx.Frame):
         self.text.Enable()
         self.text.ChangeValue(self.data[self.selected_exam][language])
         self.text.SetFocus()
-        #self.audioButton.Enable()
+        self.audioButton.Enable()
 
         if "audio_"+language in self.data[self.selected_exam]:
             self.audioLabel.SetLabel(self.data[self.selected_exam]["audio_"+language])
@@ -385,8 +409,8 @@ class MainWindow(wx.Frame):
         if textEntered:
             matching = [s for s in self.choices if textEntered.lower() in s.lower()]
             self.cb.Set(matching)
-            #self.ignoreEvtText = True 
-            #self.st.SetValue(textEntered)
+            self.ignoreEvtText = True 
+            self.st.SetValue(textEntered)
 
         self.cb.Popup()
 
