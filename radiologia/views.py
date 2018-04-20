@@ -145,5 +145,6 @@ def post_upload_audio():
         return jsonify({'result':'failure', 'error':'no filename'})
     if file and allowed_file(file.filename, app.config['ALLOWED_EXTENSIONS']):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['AUDIODIR'], filename))
+        audiodir = os.path.join(app.config['BASEDIR'], app.config['AUDIODIR'])
+        file.save(os.path.join(audiodir, filename))
         return jsonify({'result':'success'})

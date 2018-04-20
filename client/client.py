@@ -13,9 +13,7 @@ import requests
 
 DEFAULT_LANGUAGES = ["it", "en", "fr", "de"]
 DATAFILE = "data.json"
-UPDATE_URL = 'http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com/update_exams'
-UPDATE_AUDIO = 'http://localhost:5000/audio_md5'
-SEND_AUDIO = 'http://localhost:5000/upload_audio'
+BASE_URL ='http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com' 
 
 
 def filemd5(filename, block_size=2**20):
@@ -45,7 +43,7 @@ def getAudioToUpload(url, audio):
 
     
 
-def upload(url, formatted_data, status):
+def upload(url, formatted_data, status, update_audio, send_audio):
     req = urllib2.Request(url)
     req.add_header('Content-Type', 'application/json')
     req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36')
@@ -64,11 +62,11 @@ def upload(url, formatted_data, status):
             status.SetStatusText("Connecting...")
             
             response = urllib2.urlopen(req, data=json.dumps(formatted_data).encode())
-            audio = getAudioToUpload(UPDATE_AUDIO, audio)
+            audio = getAudioToUpload(update_audio, audio)
             for el in audio:
                 with open(os.path.join('audio', el['name'])) as f:
                     files = {'file': f}
-                    response = requests.post(SEND_AUDIO, files=files)
+                    response = requests.post(send_audio, files=files)
             status.SetStatusText("Data uploaded.")
             break
         except urllib2.HTTPError as e:
@@ -145,6 +143,9 @@ class MainWindow(wx.Frame):
         self.data = data
         self.selected_exam = None
         self.config = config
+        self.UPDATE_URL = config['server'] + '/update_exams'
+        self.UPDATE_AUDIO = config['server'] + '/audio_md5'
+        self.SEND_AUDIO = config['server'] + '/upload_audio'
         self.saved = True
         self.Centre()
         self.status = self.CreateStatusBar() # A Statusbar in the bottom of the window
@@ -323,7 +324,7 @@ class MainWindow(wx.Frame):
 
             formatted_data.append(d)
 
-        t = threading.Thread(target=upload, args=[self.config["server"], formatted_data, self.status])
+        t = threading.Thread(target=upload, args=[self.UPDATE_URL, formatted_data, self.status, self.UPDATE_AUDIO, self.SEND_AUDIO])
         t.start() 
 
         ConnectingDialog(self, "Uploading", t).ShowModal()
@@ -430,7 +431,7 @@ if __name__ == '__main__':
             config = json.load(f)
     except (IOError, ValueError):
         config = {
-            "server" : UPDATE_URL
+            "server" : BASE_URL
         }
 
     if not os.path.isdir("audio"):
