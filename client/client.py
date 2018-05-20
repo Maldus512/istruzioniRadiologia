@@ -60,13 +60,13 @@ def upload(url, formatted_data, status, update_audio, send_audio):
     while counter <= 5:
         try:
             #status.SetStatusText("Connecting...")
-            
             response = urllib2.urlopen(req, data=json.dumps(formatted_data).encode())
-            audio = getAudioToUpload(update_audio, audio)
+            """audio = getAudioToUpload(update_audio, audio)
             for el in audio:
                 with open(os.path.join('audio', el['name'])) as f:
                     files = {'file': f}
                     response = requests.post(send_audio, files=files)
+            """
 
             #status.SetStatusText("Data uploaded.")
             break

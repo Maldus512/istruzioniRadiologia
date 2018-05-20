@@ -21,9 +21,6 @@ body {
     font-size: 20px;
 }
 
-.submit {
-    display: inline;
-}
 
 .my-bg-primary {
     background-color: rgba(0, 0, 255, 0.3);
@@ -53,17 +50,55 @@ body {
     text-align: center;
 }
 
-.selectpicker {
+.form-group {
+    margin: 0 auto;
+    width:50% /* value of your choice which suits your alignment */
+}
+
+.selectpicker{
     width: 180px;
+    display: inline;
+}
+
+.submit {
+    display: inline;
+    width: 80px;
 }
 
 .navbar {
     border-radius: 0px !important;
 }
 
-@media only screen and (max-width: 500px) {
+.nopregnancy {
+    float:right;
+    width: 250px;
+    height: 250px;
+    margin-top: 0;
+    margin-right: 0;
+    opacity: .6;
+}
+
+.first_exam_stepbox{
+    overflow: hidden;
+    min-height: 100px;
+}
+
+
+@media only screen and (max-width: 700px) {
     .selectpicker {
+        display: inline-block;
+        font-size: 20px;
         max-width: 180px;
+        margin-bottom: 4px;
+    }
+
+    .nopregnancy {
+        display: block;
+        width: 160px;
+        height: 160px;
+        float: none;
+        margin: auto;
+        margin-bottom: 10px;
     }
 
     .exam_stepbox {
@@ -75,6 +110,9 @@ body {
     .content {
         margin-left: 0px;
         margin-right: 0px;
+    }
+    .form-group {
+        width:70%;
     }
 
     .submit {

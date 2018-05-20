@@ -2,7 +2,7 @@
 $( document ).ready(function() {
     console.log( "ready!" )
 
-    if ($('#instructions')) {
+    if ($('#instructions') && $('#instructions').is(":visible")) {
         $(document).scrollTop( $("#instructions").offset().top )
     } else {
         console.log($('#instructions'))
