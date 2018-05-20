@@ -40,23 +40,25 @@ def index():
         return render_template("index.html", user="Maldus", title = "tesi patti",
                         languages=BaseConfig.LANGUAGES_LIST, locale=session['lang'])
     elif session['step'] == 2:
-        exams = models.Exam.query.all()
+        exams = models.Exam.query.order_by(models.Exam.name).all()
         return render_template("index.html", user="Maldus", title = "tesi patti",
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, locale=session['lang'])
     elif session['step'] == 3:
-        exams = models.Exam.query.all()
+        exams = models.Exam.query.order_by(models.Exam.name).all()
         translations = []
+        exam = None
+        steps = None
+        audio = None
         if len(exams) > 0:
             exam = models.Exam.query.filter_by(id=session['exam']).first()
-            steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
-            audio = os.path.join(BaseConfig.AUDIODIR, exam.steps.filter_by(language=session['lang']).first().audio)
-            for s in steps:
-                content = s.split('\n')
-                translations.append(content)
-        else:
-            exam = None
-            steps = None
-            audio = None
+            if exam != None:
+                steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
+                audio = exam.steps.filter_by(language=session['lang']).first().audio
+                if audio:
+                    audio = os.path.join(BaseConfig.AUDIODIR, audio)
+                for s in steps:
+                    content = s.split('\n')
+                    translations.append(content)
 
 
         return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
@@ -94,9 +96,15 @@ def change_language():
 def update_database():
     data = request.get_json()
     if data:
-        models.clear_data(db.session)
+#models.clear_data(db.session)
         for exam in data:
-#e = models.Exam.query.filter_by(name=exam['name']).delete()
+            e_list = models.Exam.query.filter_by(name=exam['name']).all()
+            for e in e_list:
+                desc = models.Description.query.filter_by(exam_id=e.id).all()
+                for d in desc:
+                    db.session.delete(d)
+                db.session.delete(e)
+            db.session.commit()
             e = models.Exam(name=exam['name'])
             db.session.add(e)
             for desc in exam["steps"]:
@@ -104,12 +112,16 @@ def update_database():
                 db.session.add(d)
 
         db.session.commit()
-#with open("/tmp/{}.json".format(datetime.datetime.now(), "w")) as f:
-#json.dump(data, f, indent=4)
 
         return jsonify({'result':'success'})
     else:
         return jsonify({'result':'failure', 'data':data})
+
+
+
+@app.route('/test', methods=['POST', 'GET'])
+def test():
+    return jsonify({'result':'success'})
 
 @app.route('/audio_md5', methods=['GET', 'POST'])
 def get_audio_md5():
@@ -130,11 +142,12 @@ def get_audio_md5():
 
         return jsonify({'result':'success', 'data':response})
     else:
-        return jsonify({'result':'failure'})
+        return jsonify({'result':'failure', 'data':data})
 
 
 @app.route('/upload_audio', methods=['POST'])
 def post_upload_audio():
+    directory = os.getcwd()
     # check if the post request has the file part
     if 'file' not in request.files:
         return jsonify({'result':'failure', 'error':'no file'})
@@ -146,5 +159,5 @@ def post_upload_audio():
     if file and allowed_file(file.filename, app.config['ALLOWED_EXTENSIONS']):
         filename = secure_filename(file.filename)
         audiodir = os.path.join(app.config['BASEDIR'], app.config['AUDIODIR'])
-        file.save(os.path.join(audiodir, filename))
+        file.save(os.path.join("/home/web/mattia.maldini/html/audio/", filename))
         return jsonify({'result':'success'})
