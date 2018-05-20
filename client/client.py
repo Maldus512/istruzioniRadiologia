@@ -59,7 +59,7 @@ def upload(url, formatted_data, status, update_audio, send_audio):
 
     while counter <= 5:
         try:
-            status.SetStatusText("Connecting...")
+            #status.SetStatusText("Connecting...")
             
             response = urllib2.urlopen(req, data=json.dumps(formatted_data).encode())
             audio = getAudioToUpload(update_audio, audio)
@@ -67,24 +67,25 @@ def upload(url, formatted_data, status, update_audio, send_audio):
                 with open(os.path.join('audio', el['name'])) as f:
                     files = {'file': f}
                     response = requests.post(send_audio, files=files)
-            status.SetStatusText("Data uploaded.")
+
+            #status.SetStatusText("Data uploaded.")
             break
         except urllib2.HTTPError as e:
             dial = wx.MessageDialog(None, "The server couldn't fulfill the request. Error code: {}".format(e.code), 'Error', wx.OK | wx.ICON_ERROR)
             dial.ShowModal() 
-            status.SetStatusText("Connection error")
+            #status.SetStatusText("Connection error")
             break
         except urllib2.URLError as e:
             dial = wx.MessageDialog(None, "We failed to reach the server. Error: {}".format(e.reason), 'Error', wx.OK | wx.ICON_ERROR)
             dial.ShowModal() 
-            status.SetStatusText("Connection error")
+            #status.SetStatusText("Connection error")
             break
         except Exception as e:
             counter += 1
             if counter > 5:
                 dial = wx.MessageDialog(None, "Unknown error: {}".format(str(e)), 'Error', wx.OK | wx.ICON_ERROR)
                 dial.ShowModal() 
-                status.SetStatusText("Unknown error")
+                #status.SetStatusText("Unknown error")
                 break
 
 
