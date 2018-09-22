@@ -29,14 +29,12 @@ class BaseConfig:
     LANGUAGES = { 
         'it': 'Italiano',
         'en': 'English',
-        'de': 'Deutsch',
-        'fr': 'French',
+        'es': 'Español',
     }
     LANGUAGES_LIST = [
         {'locale':'it', 'name': 'Italiano'},
         {'locale':'en', 'name': 'English'},
-        {'locale':'de', 'name': 'Deutsch'},
-        {'locale':'fr', 'name': 'French'},
+        {'locale':'es', 'name': 'Español'},
     ]
 
 

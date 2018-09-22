@@ -120,4 +120,21 @@ body {
         width: 180px  !important;
         font-size: 20px;
     }
+
 }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        min-height: 8%;
+        background-color: #f07d7d; 
+        /*color: white;*/
+        text-align: center;
+    }
+
+    .footer p {
+        margin-top: 8px;
+        font-size: 18px;
+    }

@@ -15,6 +15,7 @@
     <!-- Font Awesome -->
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
 
+    <script src="/static/js/cookies.js"></script>
     <script src="/static/js/app.js"></script>
     <link href="/static/css/custom.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% if title %}
@@ -52,5 +53,14 @@
     <div class="content">
         {% block content %} {% endblock %}
     </div>
+    <footer class="footer page-footer">
+        <p>
+            {{ _('privacy directive') }}
+            </p>
+            <p>
+            <a href="#" id="acconsento">{{ _('consent') }}</a>
+        </p>
+    </footer>
+
 </body>
   </html>

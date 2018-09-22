@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-10 22:14+0200\n"
+"POT-Creation-Date: 2018-09-22 10:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.1\n"
+"Generated-By: Babel 2.6.0\n"
 
 #: radiologia/templates/404.html:5
 msgid "File not found"
@@ -33,16 +33,24 @@ msgstr ""
 msgid "The administrator has been notified. Sorry for the inconvenience!"
 msgstr ""
 
-#: radiologia/templates/base.html:35
+#: radiologia/templates/base.html:38
 msgid "Radiologia"
 msgstr ""
 
-#: radiologia/templates/base.html:44
+#: radiologia/templates/base.html:47
 msgid "Contatti"
 msgstr ""
 
-#: radiologia/templates/base.html:45
+#: radiologia/templates/base.html:48
 msgid "About"
+msgstr ""
+
+#: radiologia/templates/base.html:58
+msgid "privacy directive"
+msgstr ""
+
+#: radiologia/templates/base.html:62
+msgid "consent"
 msgstr ""
 
 #: radiologia/templates/contacts.html:3
@@ -53,15 +61,15 @@ msgstr ""
 msgid "Please, select your preferred language"
 msgstr ""
 
-#: radiologia/templates/index.html:16 radiologia/templates/index.html:33
+#: radiologia/templates/index.html:15 radiologia/templates/index.html:33
 msgid "send"
 msgstr ""
 
-#: radiologia/templates/index.html:22
+#: radiologia/templates/index.html:21
 msgid "Now select the exam that was prescribed to you"
 msgstr ""
 
-#: radiologia/templates/index.html:42
+#: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
 

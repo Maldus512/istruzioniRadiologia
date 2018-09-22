@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-10 22:14+0200\n"
-"PO-Revision-Date: 2017-11-29 21:30+0100\n"
+"POT-Creation-Date: 2018-09-22 10:36+0200\n"
+"PO-Revision-Date: 2018-09-22 10:47+0200\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: radiologia/templates/404.html:5
 msgid "File not found"
@@ -34,17 +35,25 @@ msgstr "Arriba Arriba!"
 msgid "The administrator has been notified. Sorry for the inconvenience!"
 msgstr "Hola chica!"
 
-#: radiologia/templates/base.html:35
+#: radiologia/templates/base.html:38
 msgid "Radiologia"
 msgstr ""
 
-#: radiologia/templates/base.html:44
+#: radiologia/templates/base.html:47
 msgid "Contatti"
 msgstr ""
 
-#: radiologia/templates/base.html:45
+#: radiologia/templates/base.html:48
 msgid "About"
 msgstr ""
+
+#: radiologia/templates/base.html:58
+msgid "privacy directive"
+msgstr "Este sitio utiliza cookies limitadas a la sesión que no requieren ningún consentimiento explícito suyo, según la directiva europea"
+
+#: radiologia/templates/base.html:62
+msgid "consent"
+msgstr "De todos modos estoy de acuerdo, incluso si no hay necesidad"
 
 #: radiologia/templates/contacts.html:3
 msgid "Developer"
@@ -54,18 +63,17 @@ msgstr ""
 msgid "Please, select your preferred language"
 msgstr "Maya desnuda"
 
-#: radiologia/templates/index.html:16 radiologia/templates/index.html:33
+#: radiologia/templates/index.html:15 radiologia/templates/index.html:33
 msgid "send"
 msgstr "via"
 
-#: radiologia/templates/index.html:22
+#: radiologia/templates/index.html:21
 msgid "Now select the exam that was prescribed to you"
 msgstr "El matador esta guapo!"
 
-#: radiologia/templates/index.html:42
+#: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
 
 #~ msgid "Hello, %(name)s"
 #~ msgstr "Hola, %(name)s"
-

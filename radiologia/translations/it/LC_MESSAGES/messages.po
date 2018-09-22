@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-10 22:14+0200\n"
-"PO-Revision-Date: 2018-04-10 22:15+0200\n"
+"POT-Creation-Date: 2018-09-22 10:36+0200\n"
+"PO-Revision-Date: 2018-09-22 10:44+0200\n"
 "Last-Translator: \n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: radiologia/templates/404.html:5
 msgid "File not found"
@@ -37,17 +37,28 @@ msgstr ""
 "E' stata inviata una notifica all'amministratore. Chiediamo scusa per "
 "l'inconveniente."
 
-#: radiologia/templates/base.html:35
+#: radiologia/templates/base.html:38
 msgid "Radiologia"
 msgstr ""
 
-#: radiologia/templates/base.html:44
+#: radiologia/templates/base.html:47
 msgid "Contatti"
 msgstr ""
 
-#: radiologia/templates/base.html:45
+#: radiologia/templates/base.html:48
 msgid "About"
 msgstr ""
+
+#: radiologia/templates/base.html:58
+msgid "privacy directive"
+msgstr ""
+"Questo sito utilizza dei cookie limitati alla sessione che non "
+"richiedono alcun consenso esplicito da parte vostra, come da direttiva "
+"europea."
+
+#: radiologia/templates/base.html:62
+msgid "consent"
+msgstr "Acconsento comunque, anche se non ce ne sarebbe bisogno"
 
 #: radiologia/templates/contacts.html:3
 msgid "Developer"
@@ -57,15 +68,15 @@ msgstr "Contatta lo sviluppatore"
 msgid "Please, select your preferred language"
 msgstr "Selezionare la lingua"
 
-#: radiologia/templates/index.html:16 radiologia/templates/index.html:33
+#: radiologia/templates/index.html:15 radiologia/templates/index.html:33
 msgid "send"
 msgstr "invia"
 
-#: radiologia/templates/index.html:22
+#: radiologia/templates/index.html:21
 msgid "Now select the exam that was prescribed to you"
 msgstr "Selezionare l'esame che ha prenotato"
 
-#: radiologia/templates/index.html:42
+#: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
 
