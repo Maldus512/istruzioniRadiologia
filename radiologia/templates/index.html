@@ -54,7 +54,7 @@
             {% else %}
                 <div class="my-bg-secondary exam_stepbox">
                     {% for line in description %}
-                    <p>{{ line }}</p>
+                    <p>{{ line|safe }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
