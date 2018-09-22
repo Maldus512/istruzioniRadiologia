@@ -30,11 +30,15 @@ class BaseConfig:
         'it': 'Italiano',
         'en': 'English',
         'es': 'Español',
+        'zh': '中国',
+        'ar': 'العربية',
     }
     LANGUAGES_LIST = [
         {'locale':'it', 'name': 'Italiano'},
         {'locale':'en', 'name': 'English'},
         {'locale':'es', 'name': 'Español'},
+        {'locale':'zh', 'name': '中国'},
+        {'locale':'ar', 'name': 'العربية'},
     ]
 
 

@@ -11,9 +11,9 @@ import shutil
 import hashlib
 import requests
 
-DEFAULT_LANGUAGES = ["it", "en", "fr", "de"]
+DEFAULT_LANGUAGES = ["it", "en", "es", "ar", "zh"]
 DATAFILE = "data.json"
-BASE_URL ='http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com' 
+BASE_URL ='http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com'
 
 
 def filemd5(filename, block_size=2**20):
@@ -41,7 +41,7 @@ def getAudioToUpload(url, audio):
     return data['data']
 
 
-    
+
 
 def upload(url, formatted_data, status, update_audio, send_audio):
     req = urllib2.Request(url)
@@ -72,19 +72,19 @@ def upload(url, formatted_data, status, update_audio, send_audio):
             break
         except urllib2.HTTPError as e:
             dial = wx.MessageDialog(None, "The server couldn't fulfill the request. Error code: {}".format(e.code), 'Error', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal() 
+            dial.ShowModal()
             #status.SetStatusText("Connection error")
             break
         except urllib2.URLError as e:
             dial = wx.MessageDialog(None, "We failed to reach the server. Error: {}".format(e.reason), 'Error', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal() 
+            dial.ShowModal()
             #status.SetStatusText("Connection error")
             break
         except Exception as e:
             counter += 1
             if counter > 5:
                 dial = wx.MessageDialog(None, "Unknown error: {}".format(str(e)), 'Error', wx.OK | wx.ICON_ERROR)
-                dial.ShowModal() 
+                dial.ShowModal()
                 #status.SetStatusText("Unknown error")
                 break
 
@@ -107,10 +107,10 @@ class ConnectingDialog(wx.Dialog):
 
         self.Bind(wx.EVT_CLOSE, self.onClose)
         wx.CallLater(100, self.update, 1, 0, self.label)
-            
+
 
     def update(self, count, tick, label):
-        
+
         if not self.thread.isAlive():
                 self.Destroy()
                 return
@@ -214,7 +214,7 @@ class MainWindow(wx.Frame):
 
         self.text = wx.TextCtrl(self.panel, style=wx.TE_MULTILINE)
         self.text.Bind(wx.EVT_TEXT, self.onTextChange)
-        self.text.Disable()        
+        self.text.Disable()
         vbox.Add(self.text, 1, wx.ALL|wx.EXPAND, 10)
 
 
@@ -260,6 +260,11 @@ class MainWindow(wx.Frame):
             self.Layout()
 
     def onSave(self, e):
+        for el in self.data.keys():
+            for lang in DEFAULT_LANGUAGES:
+                if not lang in self.data[el].keys():
+                    self.data[el][lang] = "" 
+
         with open(DATAFILE, "w") as f:
             json.dump(self.data, f, indent=4)
             self.saved = True
@@ -271,27 +276,27 @@ class MainWindow(wx.Frame):
             exam = dlg.GetValue()
             if exam in self.data:
                 dial = wx.MessageDialog(None, 'An exam named {} already exists!'.format(exam), 'Error', wx.OK | wx.ICON_ERROR)
-                dial.ShowModal()                
+                dial.ShowModal()
             else:
                 self.data[exam] = {}
                 for l in DEFAULT_LANGUAGES:
                     self.data[exam][l] = ""
                 self.updateCombox(exam)
-                
+
 
     def onRename(self, e):
         if not self.selected_exam:
             dial = wx.MessageDialog(None, "No exam selected", 'Error', wx.OK | wx.ICON_ERROR)
-            dial.ShowModal() 
+            dial.ShowModal()
             return
-            
+
         old_exam = self.selected_exam
         dlg = wx.TextEntryDialog(frame, 'Enter the new exam name','Rename exam')
         if dlg.ShowModal() == wx.ID_OK:
             exam = dlg.GetValue()
             if exam in self.data:
                 dial = wx.MessageDialog(None, 'An exam named {} already exists!'.format(exam), 'Error', wx.OK | wx.ICON_ERROR)
-                dial.ShowModal()                
+                dial.ShowModal()
             else:
                 self.data[exam] = self.data[old_exam]
                 del data[old_exam]
@@ -326,7 +331,7 @@ class MainWindow(wx.Frame):
             formatted_data.append(d)
 
         t = threading.Thread(target=upload, args=[self.UPDATE_URL, formatted_data, self.status, self.UPDATE_AUDIO, self.SEND_AUDIO])
-        t.start() 
+        t.start()
 
         ConnectingDialog(self, "Uploading", t).ShowModal()
 
@@ -339,8 +344,9 @@ class MainWindow(wx.Frame):
                 wx.CallLater(5000, lambda: self.status.PushStatusText(msg))
             else:
                 wx.CallLater(1000, check)
-        
+
         check()
+        #upload(self.UPDATE_URL, formatted_data, self.status, self.UPDATE_AUDIO, self.SEND_AUDIO)
 
 
 
@@ -406,12 +412,12 @@ class MainWindow(wx.Frame):
         self.panel.Layout()
 
     def onEnter(self, e):
-        textEntered=e.GetString()   
+        textEntered=e.GetString()
 
         if textEntered:
             matching = [s for s in self.choices if textEntered.lower() in s.lower()]
             self.cb.Set(matching)
-            self.ignoreEvtText = True 
+            self.ignoreEvtText = True
             self.st.SetValue(textEntered)
 
         self.cb.Popup()
@@ -437,7 +443,7 @@ if __name__ == '__main__':
 
     if not os.path.isdir("audio"):
         os.mkdir("audio")
-    
+
     app = wx.App()
     frame = MainWindow(None, "Radiologia", data, config)
     app.MainLoop()
