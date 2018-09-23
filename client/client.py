@@ -1,5 +1,6 @@
 import wx
 from wx.adv import AnimationCtrl
+from wx.lib.pubsub import pub
 import os
 import json
 import random
@@ -11,10 +12,25 @@ import shutil
 import hashlib
 import requests
 
-DEFAULT_LANGUAGES = ["it", "en", "es", "ar", "zh"]
+DEFAULT_LANGUAGES = ["it", "en", "es", "ar", "zh", "ru", "fr"]
 DATAFILE = "data.json"
 BASE_URL ='http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com'
+PUBID = "status.update"
 
+myEVT_UPDATE = wx.NewEventType()
+EVT_UPDATE = wx.PyEventBinder(myEVT_UPDATE, 1)
+class UpdateEvent(wx.PyCommandEvent):
+    """Event to signal that a count value is ready"""
+    def __init__(self, etype, eid, value=None):
+        """Creates the event object"""
+        wx.PyCommandEvent.__init__(self, etype, eid)
+        self._value = value
+
+    def GetValue(self):
+        """Returns the value from the event.
+        @return: the value of this event
+        """
+        return self._value
 
 def filemd5(filename, block_size=2**20):
     f = open(filename, 'rb')
@@ -40,10 +56,11 @@ def getAudioToUpload(url, audio):
 
     return data['data']
 
+def postEvent(parent, value):
+    evt = UpdateEvent(myEVT_UPDATE, -1, value)
+    wx.PostEvent(parent, evt)
 
-
-
-def upload(url, formatted_data, status, update_audio, send_audio):
+def upload(url, formatted_data, parent, update_audio, send_audio):
     req = urllib2.Request(url)
     req.add_header('Content-Type', 'application/json')
     req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36')
@@ -60,6 +77,7 @@ def upload(url, formatted_data, status, update_audio, send_audio):
     while counter <= 5:
         try:
             #status.SetStatusText("Connecting...")
+            postEvent(parent, "Connecting...")
             response = urllib2.urlopen(req, data=json.dumps(formatted_data).encode())
             """audio = getAudioToUpload(update_audio, audio)
             for el in audio:
@@ -69,16 +87,19 @@ def upload(url, formatted_data, status, update_audio, send_audio):
             """
 
             #status.SetStatusText("Data uploaded.")
+            postEvent(parent, "Data uploaded!")
             break
         except urllib2.HTTPError as e:
             dial = wx.MessageDialog(None, "The server couldn't fulfill the request. Error code: {}".format(e.code), 'Error', wx.OK | wx.ICON_ERROR)
             dial.ShowModal()
             #status.SetStatusText("Connection error")
+            postEvent(parent, "Connection error!")
             break
         except urllib2.URLError as e:
             dial = wx.MessageDialog(None, "We failed to reach the server. Error: {}".format(e.reason), 'Error', wx.OK | wx.ICON_ERROR)
             dial.ShowModal()
             #status.SetStatusText("Connection error")
+            postEvent(parent, "Connection error!")
             break
         except Exception as e:
             counter += 1
@@ -86,6 +107,7 @@ def upload(url, formatted_data, status, update_audio, send_audio):
                 dial = wx.MessageDialog(None, "Unknown error: {}".format(str(e)), 'Error', wx.OK | wx.ICON_ERROR)
                 dial.ShowModal()
                 #status.SetStatusText("Unknown error")
+                postEvent(parent, "Unknown error")
                 break
 
 
@@ -152,6 +174,8 @@ class MainWindow(wx.Frame):
         self.status = self.CreateStatusBar() # A Statusbar in the bottom of the window
 
         self.initUI(DEFAULT_LANGUAGES)
+        #pub.subscribe(self.statusUpdate, PUBID)
+        self.Bind(EVT_UPDATE, self.statusUpdate)
         self.Show()
 
     def initUI(self, languages):
@@ -192,6 +216,7 @@ class MainWindow(wx.Frame):
         self.choices = [i for i in self.data.keys()]
         self.cb = wx.ComboBox(self.panel, choices=self.choices, style=wx.CB_SORT|wx.TE_PROCESS_ENTER,size=(150,-1))
         self.cb.SetHint("Esami")
+        #self.cb.Bind(wx.EVT_COMBOBOX_CLOSEUP, self.refreshComboSet)
         self.cb.Bind(wx.EVT_TEXT_ENTER, self.onEnter)
         self.cb.Bind(wx.EVT_COMBOBOX, self.onExamSelect)
         hbox.Add(self.cb,1, wx.LEFT|wx.ALIGN_LEFT, 10 )
@@ -202,15 +227,22 @@ class MainWindow(wx.Frame):
         self.languages.Disable()
         hbox.Add(self.languages, 0, wx.LEFT|wx.ALIGN_RIGHT, 10)
 
-        self.audioButton = wx.Button(self.panel, label="audio")
+        """self.audioButton = wx.Button(self.panel, label="audio")
         self.audioButton.Bind(wx.EVT_BUTTON, self.onClicked)
         self.audioButton.Disable()
         hbox.Add(self.audioButton, 0, wx.LEFT|wx.ALIGN_LEFT, 40)
 
         self.audioLabel = wx.StaticText(self.panel, label="", size=(300,-1))
-        hbox.Add(self.audioLabel, 0, wx.RIGHT|wx.LEFT|wx.ALIGN_CENTER_VERTICAL, 10)
+        hbox.Add(self.audioLabel, 0, wx.RIGHT|wx.LEFT|wx.ALIGN_CENTER_VERTICAL, 10)"""
+
 
         vbox.Add(hbox, 0, wx.LEFT|wx.RIGHT, 10)
+
+        self.titleText = wx.TextCtrl(self.panel)
+        self.titleText.SetHint("titolo")
+        self.titleText.Bind(wx.EVT_TEXT, self.onTextChange)
+        self.titleText.Disable()
+        vbox.Add(self.titleText, 0, wx.ALL|wx.EXPAND,10)
 
         self.text = wx.TextCtrl(self.panel, style=wx.TE_MULTILINE)
         self.text.Bind(wx.EVT_TEXT, self.onTextChange)
@@ -240,8 +272,8 @@ class MainWindow(wx.Frame):
             self.languages.SetSelection(wx.NOT_FOUND)
             self.languages.Disable()
             self.text.Disable()
-            self.audioButton.Disable()
-            self.audioLabel.SetLabel("")
+            """self.audioButton.Disable()
+            self.audioLabel.SetLabel("")"""
             self.status.SetStatusText("")
         self.text.SetFocus()
         self.saved = False
@@ -255,7 +287,7 @@ class MainWindow(wx.Frame):
             self.saved = False
             language=self.languages.GetStringSelection()
             self.data[self.selected_exam]["audio_"+language] = os.path.basename(path)
-            self.audioLabel.SetLabel(os.path.basename(path))
+            #self.audioLabel.SetLabel(os.path.basename(path))
             self.panel.Layout()
             self.Layout()
 
@@ -330,7 +362,7 @@ class MainWindow(wx.Frame):
 
             formatted_data.append(d)
 
-        t = threading.Thread(target=upload, args=[self.UPDATE_URL, formatted_data, self.status, self.UPDATE_AUDIO, self.SEND_AUDIO])
+        t = threading.Thread(target=upload, args=[self.UPDATE_URL, formatted_data, self, self.UPDATE_AUDIO, self.SEND_AUDIO])
         t.start()
 
         ConnectingDialog(self, "Uploading", t).ShowModal()
@@ -348,7 +380,8 @@ class MainWindow(wx.Frame):
         check()
         #upload(self.UPDATE_URL, formatted_data, self.status, self.UPDATE_AUDIO, self.SEND_AUDIO)
 
-
+    def statusUpdate(self, evt):
+        self.status.SetStatusText(evt.GetValue())
 
     def onExit(self, e):
         if not self.saved:
@@ -380,33 +413,38 @@ class MainWindow(wx.Frame):
         exam = self.selected_exam
         if language in self.data[exam]:
             self.text.ChangeValue(self.data[exam][language])
-            if "audio_"+language in self.data[self.selected_exam]:
+            """if "audio_"+language in self.data[self.selected_exam]:
                 self.audioLabel.SetLabel(self.data[self.selected_exam]["audio_"+language])
             else:
-                self.audioLabel.SetLabel("No audio associated")
+                self.audioLabel.SetLabel("No audio associated")"""
         else:
             self.data[exam][language] = ""
             self.text.SetValue("")
-            self.audioLabel.SetLabel("")
-            self.audioButton.Disable()
+            #self.audioLabel.SetLabel("")
+            #self.audioButton.Disable()
         self.text.SetFocus()
 
 
     def onExamSelect(self, e):
         self.selected_exam =e.GetString()
+        print("selected {}".format(self.selected_exam))
         self.status.PushStatusText("Editing {}".format(self.selected_exam))
         self.languages.SetSelection(0)
         self.languages.Enable()
         language=self.languages.GetStringSelection()
+        #self.titleText.Enable()
+        #self.titleText.ChangeValue(self.data[self.selected_exam][language])
         self.text.Enable()
         self.text.ChangeValue(self.data[self.selected_exam][language])
         self.text.SetFocus()
-        self.audioButton.Enable()
 
+        """self.audioButton.Enable()
         if "audio_"+language in self.data[self.selected_exam]:
             self.audioLabel.SetLabel(self.data[self.selected_exam]["audio_"+language])
         else:
-            self.audioLabel.SetLabel("No audio associated")
+            self.audioLabel.SetLabel("No audio associated")"""
+
+        self.cb.Set(self.choices)
 
         self.Layout()
         self.panel.Layout()
@@ -418,9 +456,13 @@ class MainWindow(wx.Frame):
             matching = [s for s in self.choices if textEntered.lower() in s.lower()]
             self.cb.Set(matching)
             self.ignoreEvtText = True
-            self.st.SetValue(textEntered)
+            #self.st.SetValue(textEntered)
 
         self.cb.Popup()
+
+    def refreshComboSet(self, e):
+        print("refresh")
+        #self.ignoreEvtText = True
 
 
 

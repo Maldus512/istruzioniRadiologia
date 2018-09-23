@@ -32,6 +32,8 @@ class BaseConfig:
         'es': 'Español',
         'zh': '中国',
         'ar': 'العربية',
+        'ru': 'русский',
+        'fr': 'French',
     }
     LANGUAGES_LIST = [
         {'locale':'it', 'name': 'Italiano'},
@@ -39,6 +41,8 @@ class BaseConfig:
         {'locale':'es', 'name': 'Español'},
         {'locale':'zh', 'name': '中国'},
         {'locale':'ar', 'name': 'العربية'},
+        {'locale':'ru', 'name': 'русский'},
+        {'locale':'fr', 'name': 'French'},
     ]
 
 
