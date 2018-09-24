@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-09-22 10:47+0200\n"
+"PO-Revision-Date: 2018-09-24 17:21+0200\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -21,19 +21,19 @@ msgstr ""
 
 #: radiologia/templates/404.html:5
 msgid "File not found"
-msgstr "Ahy ahy ahy!"
+msgstr "Archivo no encontrado"
 
 #: radiologia/templates/404.html:6 radiologia/templates/500.html:7
 msgid "Back"
-msgstr "Caramba!"
+msgstr "Espalda"
 
 #: radiologia/templates/500.html:5
 msgid "An unexpected error has occurred"
-msgstr "Arriba Arriba!"
+msgstr "Ha ocurrido un error inesperado"
 
 #: radiologia/templates/500.html:6
 msgid "The administrator has been notified. Sorry for the inconvenience!"
-msgstr "Hola chica!"
+msgstr "El administrador ha sido notificado. ¡Lo siento por los inconvenientes ocasionados!"
 
 #: radiologia/templates/base.html:38
 msgid "Radiologia"
@@ -61,15 +61,15 @@ msgstr ""
 
 #: radiologia/templates/index.html:3
 msgid "Please, select your preferred language"
-msgstr "Maya desnuda"
+msgstr "Por favor, selecciona tu idioma preferido"
 
 #: radiologia/templates/index.html:15 radiologia/templates/index.html:33
 msgid "send"
-msgstr "via"
+msgstr "enviar"
 
 #: radiologia/templates/index.html:21
 msgid "Now select the exam that was prescribed to you"
-msgstr "El matador esta guapo!"
+msgstr "Ahora seleccione el examen que le fue recetado"
 
 #: radiologia/templates/index.html:43
 msgid "Audio error"
