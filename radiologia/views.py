@@ -137,8 +137,8 @@ def download_database():
 #models.clear_data(db.session)
     data = {}
     e_list = models.Exam.query.all()
-    exam = {}
     for e in e_list:
+        exam = {}
         pictures = []
         #if d.pictures:
         #    pictures = e.pictures.split('/')
