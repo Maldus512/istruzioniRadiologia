@@ -58,8 +58,25 @@
                     {% endfor %}
                 </div>
             {% endif %}
+
+            {% if loop.length == 1 or loop.index0 == loop.length - 2%}
+                {% if pictures %}
+                <div id="imagewrapper">
+                <div id="imagewrapper2">
+                <div id="imageshow">
+                    {% for pic in pictures %}
+                        {% if pic|length > 1 %}
+                            <div><img src="/static/img/posizioni/{{ pic }}"/></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+                </div>
+                {% endif %}
+            {% endif %}
         {% endfor %}
-</div>
+
+            </div>
 {% endif %}
 
 {% endblock %}

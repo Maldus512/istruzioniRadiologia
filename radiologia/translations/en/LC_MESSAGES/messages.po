@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-09-22 10:46+0200\n"
+"PO-Revision-Date: 2018-10-07 21:11+0200\n"
 "Last-Translator: \n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr "This website uses session-limited cookies, thus your consent is not requ
 
 #: radiologia/templates/base.html:62
 msgid "consent"
-msgstr "I consent anyway, even if it's not needed"
+msgstr "I agree"
 
 #: radiologia/templates/contacts.html:3
 msgid "Developer"

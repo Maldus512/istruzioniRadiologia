@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-09-22 10:44+0200\n"
+"PO-Revision-Date: 2018-10-07 21:10+0200\n"
 "Last-Translator: \n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #: radiologia/templates/base.html:62
 msgid "consent"
-msgstr "Acconsento comunque, anche se non ce ne sarebbe bisogno"
+msgstr "Acconsento"
 
 #: radiologia/templates/contacts.html:3
 msgid "Developer"

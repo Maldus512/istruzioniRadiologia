@@ -49,11 +49,15 @@ def index():
         exam = None
         steps = None
         audio = None
+        pictures = []
         if len(exams) > 0:
             exam = models.Exam.query.filter_by(id=session['exam']).first()
             if exam != None:
                 steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
                 audio = exam.steps.filter_by(language=session['lang']).first().audio
+                #pictures = exam.pictures
+                if pictures:
+                    pictures = pictures.split('/')
                 if audio:
                     audio = os.path.join(BaseConfig.AUDIODIR, audio)
                 for s in steps:
@@ -61,7 +65,7 @@ def index():
                     translations.append(content)
 
 
-        return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio,
+        return render_template("index.html", user="Maldus", title = "tesi patti", exam=exam, audio=audio, pictures=pictures,
                         languages=BaseConfig.LANGUAGES_LIST, exams=exams, steps=translations, locale=session['lang'])
 
 @app.route('/contacts')
@@ -105,9 +109,20 @@ def update_database():
                     db.session.delete(d)
                 db.session.delete(e)
             db.session.commit()
-            e = models.Exam(name=exam['name'])
+
+            pictures = ""
+            if "pictures" in exam.keys():
+                piclist = exam["pictures"]
+                for p in piclist:
+                    pictures += p
+                    pictures += "/"
+                pictures.rstrip("/")
+
+            e = models.Exam(name=exam['name'])#, pictures=pictures)
             db.session.add(e)
+
             for desc in exam["steps"]:
+            
                 d = models.Description(language=desc['language'], description=desc['description'], exam=e, audio=desc['audio'])
                 db.session.add(d)
 
@@ -117,6 +132,23 @@ def update_database():
     else:
         return jsonify({'result':'failure', 'data':data})
 
+@app.route('/download_exams', methods=['GET'])
+def download_database():
+#models.clear_data(db.session)
+    data = {}
+    e_list = models.Exam.query.all()
+    exam = {}
+    for e in e_list:
+        pictures = []
+        #if d.pictures:
+        #    pictures = e.pictures.split('/')
+        desc = models.Description.query.filter_by(exam_id=e.id).all()
+        for d in desc:
+            exam[d.language] = d.description
+        exam["pictures"] = pictures
+        data[e.name] = exam
+
+    return jsonify({'result':'success', 'data':data})
 
 
 @app.route('/test', methods=['POST', 'GET'])
