@@ -55,7 +55,7 @@ def index():
             if exam != None:
                 steps = exam.steps.filter_by(language=session['lang']).first().description.split('\n\n')
                 audio = exam.steps.filter_by(language=session['lang']).first().audio
-                #pictures = exam.pictures
+                pictures = exam.pictures
                 if pictures:
                     pictures = pictures.split('/')
                 if audio:
@@ -118,7 +118,7 @@ def update_database():
                     pictures += "/"
                 pictures.rstrip("/")
 
-            e = models.Exam(name=exam['name'])#, pictures=pictures)
+            e = models.Exam(name=exam['name'], pictures=pictures)
             db.session.add(e)
 
             for desc in exam["steps"]:
@@ -140,8 +140,8 @@ def download_database():
     for e in e_list:
         exam = {}
         pictures = []
-        #if d.pictures:
-        #    pictures = e.pictures.split('/')
+        if d.pictures:
+            pictures = e.pictures.split('/')
         desc = models.Description.query.filter_by(exam_id=e.id).all()
         for d in desc:
             exam[d.language] = d.description

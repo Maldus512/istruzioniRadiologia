@@ -12,7 +12,7 @@ class Exam(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True, nullable=False)
     steps = db.relationship('Description', backref='exam', lazy='dynamic')
-    #pictures = db.Column(db.String(160), nullable=True)
+    pictures = db.Column(db.String(160), nullable=True)
 
     def __repr__(self):
         return '<Exam %r>' % (self.name)
