@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-10-07 21:11+0200\n"
+"POT-Creation-Date: 2018-10-09 09:11+0200\n"
+"PO-Revision-Date: 2018-10-09 09:15+0200\n"
 "Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -33,7 +33,9 @@ msgstr "Ha ocurrido un error inesperado"
 
 #: radiologia/templates/500.html:6
 msgid "The administrator has been notified. Sorry for the inconvenience!"
-msgstr "El administrador ha sido notificado. ¡Lo siento por los inconvenientes ocasionados!"
+msgstr ""
+"El administrador ha sido notificado. ¡Lo siento por los inconvenientes "
+"ocasionados!"
 
 #: radiologia/templates/base.html:38
 msgid "Radiologia"
@@ -49,9 +51,11 @@ msgstr ""
 
 #: radiologia/templates/base.html:58
 msgid "privacy directive"
-msgstr "Este sitio utiliza cookies limitadas a la sesión que no requieren ningún consentimiento explícito suyo, según la directiva europea"
+msgstr ""
+"Este sitio utiliza cookies limitadas a la sesión que no requieren ningún "
+"consentimiento explícito suyo, según la directiva europea"
 
-#: radiologia/templates/base.html:62
+#: radiologia/templates/base.html:61
 msgid "consent"
 msgstr "De todos modos estoy de acuerdo"
 
@@ -74,6 +78,10 @@ msgstr "Ahora seleccione el examen que le fue recetado"
 #: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
+
+#: radiologia/templates/index.html:65
+msgid "Posizionamento"
+msgstr "Colocación"
 
 #~ msgid "Hello, %(name)s"
 #~ msgstr "Hola, %(name)s"

@@ -140,7 +140,7 @@ def download_database():
     for e in e_list:
         exam = {}
         pictures = []
-        if d.pictures:
+        if e.pictures:
             pictures = e.pictures.split('/')
         desc = models.Description.query.filter_by(exam_id=e.id).all()
         for d in desc:

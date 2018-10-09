@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-10-07 21:11+0200\n"
+"POT-Creation-Date: 2018-10-09 09:11+0200\n"
+"PO-Revision-Date: 2018-10-09 09:15+0200\n"
 "Last-Translator: \n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -49,9 +49,11 @@ msgstr ""
 
 #: radiologia/templates/base.html:58
 msgid "privacy directive"
-msgstr "This website uses session-limited cookies, thus your consent is not required as per European privacy law."
+msgstr ""
+"This website uses session-limited cookies, thus your consent is not "
+"required as per European privacy law."
 
-#: radiologia/templates/base.html:62
+#: radiologia/templates/base.html:61
 msgid "consent"
 msgstr "I agree"
 
@@ -74,3 +76,7 @@ msgstr ""
 #: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
+
+#: radiologia/templates/index.html:65
+msgid "Posizionamento"
+msgstr "Positioning"

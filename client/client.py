@@ -16,6 +16,8 @@ DEFAULT_LANGUAGES = ["it", "en", "es", "ar", "zh", "ru", "fr"]
 DATAFILE = "data.json"
 BASE_URL ='http://ec2-52-56-218-193.eu-west-2.compute.amazonaws.com'
 PUBID = "status.update"
+DESC = "description"
+TIT = "title"
 
 myEVT_UPDATE = wx.NewEventType()
 EVT_UPDATE = wx.PyEventBinder(myEVT_UPDATE, 1)
@@ -112,6 +114,40 @@ def upload(url, formatted_data, parent, update_audio, send_audio):
 
 
 
+def download(url, parent):
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36')
+
+    counter = 0
+    while counter <= 5:
+        try:
+            postEvent(parent, "Connecting...")
+            response = urllib2.urlopen(req)
+
+            postEvent(parent, "Data downloaded!")
+            return json.load(response)['data']
+            break
+        except urllib2.HTTPError as e:
+            dial = wx.MessageDialog(None, "The server couldn't fulfill the request. Error code: {}".format(e.code), 'Error', wx.OK | wx.ICON_ERROR)
+            dial.ShowModal()
+            postEvent(parent, "Connection error!")
+            break
+        except urllib2.URLError as e:
+            dial = wx.MessageDialog(None, "We failed to reach the server. Error: {}".format(e.reason), 'Error', wx.OK | wx.ICON_ERROR)
+            dial.ShowModal()
+            postEvent(parent, "Connection error!")
+            break
+        except Exception as e:
+            counter += 1
+            if counter > 5:
+                dial = wx.MessageDialog(None, "Unknown error: {}".format(str(e)), 'Error', wx.OK | wx.ICON_ERROR)
+                dial.ShowModal()
+                postEvent(parent, "Unknown error")
+                break
+
+
+
 class ConnectingDialog(wx.Dialog):
     def __init__(self, parent, title, thread):
         super(ConnectingDialog, self).__init__(parent, title = title, size = (350,120))
@@ -166,6 +202,7 @@ class MainWindow(wx.Frame):
         self.data = data
         self.selected_exam = None
         self.config = config
+        self.DOWNLOAD_URL = config['server'] + '/download_exams'
         self.UPDATE_URL = config['server'] + '/update_exams'
         self.UPDATE_AUDIO = config['server'] + '/audio_md5'
         self.SEND_AUDIO = config['server'] + '/upload_audio'
@@ -193,6 +230,7 @@ class MainWindow(wx.Frame):
         rmitem = filemenu.Append(wx.ID_DELETE, "Delete", "Remove current exam")
         fitem = filemenu.Append(wx.ID_SAVE)
         uitem = filemenu.Append(wx.ID_ANY, "&Upload","Upload data to server")
+        ditem = filemenu.Append(wx.ID_ANY, "&Download","Download data from server")
         filemenu.AppendSeparator()
         settingsitem = filemenu.Append(wx.ID_ANY,"Settings","Configure settings")
         filemenu.AppendSeparator()
@@ -205,6 +243,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.onRename, rnitem)
         self.Bind(wx.EVT_MENU, self.onDelete, rmitem)
         self.Bind(wx.EVT_MENU, self.onUpload, uitem)
+        self.Bind(wx.EVT_MENU, self.onDownload, ditem)
 
         # Creating the menubar.
         menuBar = wx.MenuBar()
@@ -262,6 +301,7 @@ class MainWindow(wx.Frame):
         if exam != None:
             self.cb.SetSelection(self.cb.FindString(exam))
             self.selected_exam = exam
+            #self.text.SetValue(self.data[exam][self.languages.GetStringSelection()][DESC])
             self.text.SetValue(self.data[exam][self.languages.GetStringSelection()])
             self.status.SetStatusText("Editing {}".format(self.selected_exam))
         else:
@@ -295,7 +335,8 @@ class MainWindow(wx.Frame):
         for el in self.data.keys():
             for lang in DEFAULT_LANGUAGES:
                 if not lang in self.data[el].keys():
-                    self.data[el][lang] = "" 
+                    #self.data[el][lang][DESC]= "" 
+                    self.data[el][lang]= "" 
 
         with open(DATAFILE, "w") as f:
             json.dump(self.data, f, indent=4)
@@ -312,6 +353,7 @@ class MainWindow(wx.Frame):
             else:
                 self.data[exam] = {}
                 for l in DEFAULT_LANGUAGES:
+                    #self.data[exam][l] = { DESC:"", TIT:""}
                     self.data[exam][l] = ""
                 self.updateCombox(exam)
 
@@ -343,6 +385,11 @@ class MainWindow(wx.Frame):
             self.status.PopStatusText()
             self.updateCombox()
 
+    def onDownload(self, e):
+        data = download(self.DOWNLOAD_URL, self)
+
+        self.data = data
+        self.updateCombox()
 
     def onUpload(self, e):
         formatted_data = []
@@ -350,14 +397,22 @@ class MainWindow(wx.Frame):
             d = {}
             d["name"] = exam
             d["steps"] = []
+            
+            pictures = []
+            if "pictures" in self.data[exam].keys():
+                pictures = self.data[exam]["pictures"]
+            d["pictures"] = pictures
 
             for lang in list(self.data[exam].keys()):
+                if lang == "pictures":
+                    continue
                 if "audio_" in lang:
                     continue
                 if "audio_"+lang in self.data[exam]:
                     audio = self.data[exam]["audio_"+lang]
                 else:
                     audio = None
+                #d["steps"].append({"language":lang, "description":self.data[exam][lang][DESC], "audio":audio})
                 d["steps"].append({"language":lang, "description":self.data[exam][lang], "audio":audio})
 
             formatted_data.append(d)
@@ -405,7 +460,9 @@ class MainWindow(wx.Frame):
     def onTextChange(self, e):
         exam = self.selected_exam
         language = self.languages.GetStringSelection()
-        self.data[exam][language] = e.GetString()
+        self.data[exam][language] = self.text.GetString()
+        #self.data[exam][language][DESC] = self.text.GetString()
+        #self.data[exam][language][TIT] = self.titleText.GetString()
         self.saved = False
 
     def onLang(self, e):
@@ -413,13 +470,18 @@ class MainWindow(wx.Frame):
         exam = self.selected_exam
         if language in self.data[exam]:
             self.text.ChangeValue(self.data[exam][language])
+            #self.text.ChangeValue(self.data[exam][language][DESC])
+            #self.titleText.ChangeValue(self.data[exam][language][TIT])
             """if "audio_"+language in self.data[self.selected_exam]:
                 self.audioLabel.SetLabel(self.data[self.selected_exam]["audio_"+language])
             else:
                 self.audioLabel.SetLabel("No audio associated")"""
         else:
             self.data[exam][language] = ""
+            #self.data[exam][language][DESC] = ""
+            #self.data[exam][language][TIT] = ""
             self.text.SetValue("")
+            self.titleText.SetValue("")
             #self.audioLabel.SetLabel("")
             #self.audioButton.Disable()
         self.text.SetFocus()
@@ -436,6 +498,8 @@ class MainWindow(wx.Frame):
         #self.titleText.ChangeValue(self.data[self.selected_exam][language])
         self.text.Enable()
         self.text.ChangeValue(self.data[self.selected_exam][language])
+        #self.text.ChangeValue(self.data[self.selected_exam][language][DESC])
+        #self.titleText.ChangeValue(self.data[self.selected_exam][language][TIT])
         self.text.SetFocus()
 
         """self.audioButton.Enable()

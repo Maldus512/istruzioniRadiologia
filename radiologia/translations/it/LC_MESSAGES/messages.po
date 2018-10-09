@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-22 10:36+0200\n"
-"PO-Revision-Date: 2018-10-07 21:10+0200\n"
+"POT-Creation-Date: 2018-10-09 09:11+0200\n"
+"PO-Revision-Date: 2018-10-09 09:15+0200\n"
 "Last-Translator: \n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr ""
 "richiedono alcun consenso esplicito da parte vostra, come da direttiva "
 "europea."
 
-#: radiologia/templates/base.html:62
+#: radiologia/templates/base.html:61
 msgid "consent"
 msgstr "Acconsento"
 
@@ -79,6 +79,10 @@ msgstr "Selezionare l'esame che ha prenotato"
 #: radiologia/templates/index.html:43
 msgid "Audio error"
 msgstr ""
+
+#: radiologia/templates/index.html:65
+msgid "Posizionamento"
+msgstr "Posizionamento"
 
 #~ msgid "Hello, %(name)s"
 #~ msgstr "Ciao, %(name)s"

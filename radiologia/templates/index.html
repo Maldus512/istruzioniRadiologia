@@ -61,6 +61,8 @@
 
             {% if loop.length == 1 or loop.index0 == loop.length - 2%}
                 {% if pictures %}
+                        <div class="my-bg-secondary exam_stepbox">
+                            <p class="subtitle">{{ _('Posizionamento') }}</p>
                 <div id="imagewrapper">
                 <div id="imagewrapper2">
                 <div id="imageshow">
@@ -69,6 +71,7 @@
                             <div><img src="/static/img/posizioni/{{ pic }}"/></div>
                         {% endif %}
                     {% endfor %}
+                        </div>
                 </div>
                 </div>
                 </div>

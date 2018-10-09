@@ -83,11 +83,17 @@ body {
     min-height: 100px;
 }
 
+.subtitle{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 #imagewrapper {
     text-align: center;
 }
 #imagewrapper2 {
-    min-width: 50%;
+    min-width: 70%;
     display: inline-block;
 }
 #imageshow {   
