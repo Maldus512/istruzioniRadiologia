@@ -141,7 +141,7 @@ def download_database():
         exam = {}
         pictures = []
         if e.pictures:
-            pictures = e.pictures.split('/')
+            pictures = [x for x in e.pictures.split('/') if len(x) > 1]
         desc = models.Description.query.filter_by(exam_id=e.id).all()
         for d in desc:
             exam[d.language] = d.description
